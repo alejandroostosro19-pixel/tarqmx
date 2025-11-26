@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TARQ MX - Taller de Arquitectura Mexicana</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-bg: #ffffff;
+            --color-text: #000000;
+            --color-accent: #000000;
+            --color-secondary: #f8f8f8;
+            --color-highlight: #000000;
+            --color-gray: #666666;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 2rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.95) 100%);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            animation: slideDown 0.8s ease-out;
+        }
+
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 0.4rem;
+            color: var(--color-text);
+        }
+
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .logo-main {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: 0.5rem;
+            line-height: 1;
+            margin-bottom: 0.3rem;
+        }
+
+        .logo-subtitle {
+            font-size: 0.5rem;
+            font-weight: 400;
+            letter-spacing: 0.3rem;
+            text-transform: uppercase;
+            opacity: 0.8;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--color-text);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.1rem;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--color-accent);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--color-accent);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            background-color: var(--color-bg);
+        }
+
+        .hero-slideshow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1;
+        }
+
+        .hero-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+        }
+
+        .hero-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .hero-slide.active {
+            opacity: 1;
+        }
+
+        .hero-slide::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(255, 255, 255, 0.7) 0%,
+                rgba(255, 255, 255, 0.85) 50%,
+                rgba(255, 255, 255, 0.9) 100%
+            );
+        }
+
+        .hero-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(0deg, transparent 24%, rgba(0,0,0,0.01) 25%, rgba(0,0,0,0.01) 26%, transparent 27%, transparent 74%, rgba(0,0,0,0.01) 75%, rgba(0,0,0,0.01) 76%, transparent 77%, transparent),
+                linear-gradient(90deg, transparent 24%, rgba(0,0,0,0.01) 25%, rgba(0,0,0,0.01) 26%, transparent 27%, transparent 74%, rgba(0,0,0,0.01) 75%, rgba(0,0,0,0.01) 76%, transparent 77%, transparent);
+            background-size: 100px 100px;
+            animation: gridMove 20s linear infinite;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 10;
+            animation: fadeInUp 1s ease-out 0.3s backwards;
+            position: relative;
+        }
+
+        .hero-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 8rem;
+            font-weight: 700;
+            letter-spacing: 1rem;
+            color: var(--color-text);
+            margin-bottom: 1rem;
+            line-height: 0.9;
+        }
+
+        .hero-subtitle {
+            font-size: 1rem;
+            font-weight: 400;
+            letter-spacing: 0.5rem;
+            color: var(--color-gray);
+            text-transform: uppercase;
+            margin-bottom: 3rem;
+        }
+
+        .hero-description {
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            font-weight: 400;
+            line-height: 1.8;
+            color: var(--color-gray);
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1.2rem 3rem;
+            background-color: var(--color-text);
+            border: 2px solid var(--color-text);
+            color: var(--color-bg);
+            text-decoration: none;
+            font-weight: 500;
+            letter-spacing: 0.2rem;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background-color: var(--color-bg);
+            transition: left 0.4s ease;
+            z-index: -1;
+        }
+
+        .cta-button:hover {
+            color: var(--color-text);
+            background-color: transparent;
+        }
+
+        .cta-button:hover::before {
+            left: 0;
+        }
+
+        .slideshow-controls {
+            position: absolute;
+            bottom: 4rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .slide-dot {
+            width: 12px;
+            height: 12px;
+            border: 2px solid var(--color-text);
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .slide-dot.active {
+            background: var(--color-text);
+            width: 40px;
+        }
+
+        .slide-dot:hover {
+            background: var(--color-gray);
+        }
+
+        /* Sections */
+        section {
+            padding: 8rem 4rem;
+            position: relative;
+        }
+
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            color: var(--color-text);
+            position: relative;
+            display: inline-block;
+            letter-spacing: 0.2rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 0;
+            width: 80px;
+            height: 3px;
+            background-color: var(--color-text);
+        }
+
+        /* About Section */
+        .about {
+            background-color: var(--color-secondary);
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            align-items: center;
+            margin-top: 4rem;
+        }
+
+        .about-text {
+            animation: fadeInLeft 0.8s ease-out;
+        }
+
+        .about-text h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--color-text);
+            font-weight: 600;
+            letter-spacing: 0.05rem;
+        }
+
+        .about-text p {
+            font-size: 1.05rem;
+            line-height: 1.9;
+            margin-bottom: 1.5rem;
+            font-weight: 400;
+            color: var(--color-gray);
+        }
+
+        .about-visual {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            animation: fadeInRight 0.8s ease-out;
+        }
+
+        .stat-box {
+            background: var(--color-bg);
+            padding: 3rem 2rem;
+            text-align: center;
+            border: 2px solid var(--color-text);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .stat-box:hover {
+            transform: translateY(-10px);
+            background-color: var(--color-text);
+        }
+
+        .stat-box:hover .stat-number,
+        .stat-box:hover .stat-label {
+            color: var(--color-bg);
+        }
+
+        .stat-number {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--color-text);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            letter-spacing: 0.15rem;
+            text-transform: uppercase;
+            color: var(--color-gray);
+            font-weight: 500;
+        }
+
+        /* Services Section */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .service-card {
+            background: var(--color-bg);
+            padding: 3rem;
+            border: 2px solid var(--color-text);
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--color-text);
+            transition: left 0.6s ease;
+        }
+
+        .service-card:hover::before {
+            left: 0;
+        }
+
+        .service-card:hover {
+            transform: translateY(-15px);
+        }
+
+        .service-card:hover .service-icon,
+        .service-card:hover h3,
+        .service-card:hover p {
+            color: var(--color-bg);
+            position: relative;
+            z-index: 1;
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            color: var(--color-text);
+            transition: color 0.3s ease;
+        }
+
+        .service-card h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--color-text);
+            font-weight: 600;
+            letter-spacing: 0.05rem;
+            transition: color 0.3s ease;
+        }
+
+        .service-card p {
+            font-size: 1rem;
+            line-height: 1.7;
+            font-weight: 400;
+            color: var(--color-gray);
+            transition: color 0.3s ease;
+        }
+
+        /* Portfolio Section */
+        .portfolio {
+            background-color: var(--color-secondary);
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .portfolio-item {
+            position: relative;
+            height: 400px;
+            background: linear-gradient(135deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.02) 100%);
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid var(--color-text);
+        }
+
+        .portfolio-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 3rem;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .portfolio-item:hover .portfolio-overlay {
+            opacity: 1;
+        }
+
+        .portfolio-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--color-bg);
+            font-weight: 600;
+            letter-spacing: 0.05rem;
+            transform: translateY(20px);
+            transition: transform 0.5s ease;
+        }
+
+        .portfolio-item:hover .portfolio-title {
+            transform: translateY(0);
+        }
+
+        .portfolio-description {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.8);
+            font-weight: 400;
+            transform: translateY(20px);
+            transition: transform 0.5s ease 0.1s;
+        }
+
+        .portfolio-item:hover .portfolio-description {
+            transform: translateY(0);
+        }
+
+        /* Contact Section */
+        .contact {
+            text-align: center;
+        }
+
+        .contact-content {
+            max-width: 800px;
+            margin: 4rem auto 0;
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+            margin-bottom: 4rem;
+        }
+
+        .contact-item {
+            padding: 2rem;
+        }
+
+        .contact-item h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            color: var(--color-text);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15rem;
+            font-weight: 600;
+        }
+
+        .contact-item p {
+            font-size: 1.05rem;
+            font-weight: 400;
+            color: var(--color-gray);
+        }
+
+        .contact-item a {
+            color: var(--color-gray);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .contact-item a:hover {
+            color: var(--color-text);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            border: 2px solid var(--color-text);
+            color: var(--color-text);
+            text-decoration: none;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background-color: var(--color-text);
+            color: var(--color-bg);
+            transform: translateY(-5px);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--color-secondary);
+            padding: 3rem 4rem;
+            text-align: center;
+            border-top: 2px solid var(--color-text);
+        }
+
+        footer p {
+            font-size: 0.85rem;
+            font-weight: 400;
+            letter-spacing: 0.1rem;
+            color: var(--color-gray);
+        }
+
+        /* Animations */
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                transform: translateX(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                transform: translateX(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes gridMove {
+            0% {
+                transform: translate(0, 0);
+            }
+            100% {
+                transform: translate(100px, 100px);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .hero-title {
+                font-size: 5rem;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-info {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            nav {
+                padding: 2rem;
+            }
+
+            .nav-links {
+                gap: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 3.5rem;
+                letter-spacing: 0.3rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1rem;
+                letter-spacing: 0.4rem;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+            }
+
+            section {
+                padding: 5rem 2rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="logo-container">
+            <div class="logo-main">TARQ MX</div>
+            <div class="logo-subtitle">TALLER DE ARQUITECTURA MEXICANA</div>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#inicio">Inicio</a></li>
+            <li><a href="#nosotros">Nosotros</a></li>
+            <li><a href="#servicios">Servicios</a></li>
+            <li><a href="#portfolio">Portfolio</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="hero">
+        <div class="hero-slideshow">
+            <div class="hero-slide active">
+                <img src="/mnt/user-data/outputs/505736438_18093490084608263_8203742829381727429_n.jpg" alt="Interior contemporáneo TARQ MX">
+            </div>
+            <div class="hero-slide">
+                <img src="/mnt/user-data/outputs/517410428_18096278788608263_2735431175681411324_n.jpg" alt="Casa con alberca TARQ MX">
+            </div>
+            <div class="hero-slide">
+                <img src="/mnt/user-data/outputs/517761647_18095990875608263_1755454461962689712_n.jpg" alt="Patio interior TARQ MX">
+            </div>
+            <div class="hero-slide">
+                <img src="/mnt/user-data/outputs/TARQ.jpg" alt="Vista aérea proyecto TARQ MX">
+            </div>
+        </div>
+        <div class="hero-grid"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">TARQ MX</h1>
+            <p class="hero-subtitle">Taller de Arquitectura Mexicana</p>
+            <p class="hero-description">
+                Creamos espacios que transforman la manera en que vivimos, trabajamos y nos conectamos con nuestro entorno.
+            </p>
+            <a href="#contacto" class="cta-button">Iniciar Proyecto</a>
+        </div>
+        <div class="slideshow-controls">
+            <div class="slide-dot active" data-slide="0"></div>
+            <div class="slide-dot" data-slide="1"></div>
+            <div class="slide-dot" data-slide="2"></div>
+            <div class="slide-dot" data-slide="3"></div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="nosotros" class="about">
+        <h2 class="section-title">Nosotros</h2>
+        <div class="about-content">
+            <div class="about-text">
+                <h3>Arquitectura con Identidad</h3>
+                <p>
+                    TARQ MX es un taller de arquitectura mexicana dedicado a crear espacios que honran nuestra tradición mientras abrazan la innovación contemporánea.
+                </p>
+                <p>
+                    Nuestro enfoque integra la riqueza cultural mexicana con soluciones arquitectónicas sostenibles y funcionales, diseñadas para mejorar la calidad de vida de quienes habitan nuestros espacios.
+                </p>
+                <p>
+                    Cada proyecto es una oportunidad para contar una historia única, fusionando elementos tradicionales con técnicas modernas de construcción y diseño.
+                </p>
+            </div>
+            <div class="about-visual">
+                <div class="stat-box">
+                    <span class="stat-number">150+</span>
+                    <span class="stat-label">Proyectos</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">12</span>
+                    <span class="stat-label">Años</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">8</span>
+                    <span class="stat-label">Premios</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">100%</span>
+                    <span class="stat-label">Satisfacción</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="servicios" class="services">
+        <h2 class="section-title">Servicios</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">◼</div>
+                <h3>Diseño Arquitectónico</h3>
+                <p>
+                    Conceptualización y desarrollo de proyectos arquitectónicos que reflejan tu visión, desde residencias hasta espacios comerciales y culturales.
+                </p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">◻</div>
+                <h3>Remodelación</h3>
+                <p>
+                    Transformación y renovación de espacios existentes, respetando la estructura original mientras modernizamos funcionalidad y estética.
+                </p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">◼</div>
+                <h3>Interiorismo</h3>
+                <p>
+                    Diseño de interiores que crean ambientes armoniosos, funcionales y estéticamente excepcionales, adaptados a tu estilo de vida.
+                </p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">◻</div>
+                <h3>Consultoría</h3>
+                <p>
+                    Asesoría profesional en todas las etapas del proyecto, desde la concepción hasta la ejecución, garantizando resultados óptimos.
+                </p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">◼</div>
+                <h3>Dirección de Obra</h3>
+                <p>
+                    Supervisión integral del proceso constructivo, asegurando calidad, tiempos y presupuestos acordados.
+                </p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">◻</div>
+                <h3>Sostenibilidad</h3>
+                <p>
+                    Implementación de estrategias ecológicas y eficientes que minimizan el impacto ambiental de cada proyecto.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="portfolio">
+        <h2 class="section-title">Portfolio</h2>
+        <div class="portfolio-grid">
+            <div class="portfolio-item">
+                <div class="portfolio-overlay">
+                    <h3 class="portfolio-title">Casa Contemporánea</h3>
+                    <p class="portfolio-description">Residencia moderna que integra elementos naturales con diseño minimalista en el corazón de la ciudad.</p>
+                </div>
+            </div>
+            <div class="portfolio-item">
+                <div class="portfolio-overlay">
+                    <h3 class="portfolio-title">Espacio Cultural</h3>
+                    <p class="portfolio-description">Centro comunitario diseñado para fomentar la interacción social y el intercambio cultural.</p>
+                </div>
+            </div>
+            <div class="portfolio-item">
+                <div class="portfolio-overlay">
+                    <h3 class="portfolio-title">Oficinas Corporativas</h3>
+                    <p class="portfolio-description">Ambiente de trabajo innovador que promueve la creatividad y la colaboración.</p>
+                </div>
+            </div>
+            <div class="portfolio-item">
+                <div class="portfolio-overlay">
+                    <h3 class="portfolio-title">Restaurante Boutique</h3>
+                    <p class="portfolio-description">Diseño gastronómico que fusiona tradición culinaria mexicana con estética contemporánea.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contacto" class="contact">
+        <h2 class="section-title">Contacto</h2>
+        <div class="contact-content">
+            <p class="hero-description">
+                ¿Listo para comenzar tu proyecto? Estamos aquí para convertir tu visión en realidad.
+            </p>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <h3>Ubicación</h3>
+                    <p>Ciudad de México<br>México</p>
+                </div>
+                <div class="contact-item">
+                    <h3>Email</h3>
+                    <p><a href="mailto:contacto.tarqmx@gmail.com">contacto.tarqmx@gmail.com</a></p>
+                </div>
+                <div class="contact-item">
+                    <h3>WhatsApp</h3>
+                    <p><a href="https://wa.me/522291139209" target="_blank">229 113 9209</a></p>
+                </div>
+            </div>
+            <a href="mailto:contacto.tarqmx@gmail.com" class="cta-button">Enviar Mensaje</a>
+            
+            <div class="social-links">
+                <a href="https://www.facebook.com/TallerDeArquitecturaMex/" target="_blank" class="social-link" aria-label="Facebook">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                    </svg>
+                </a>
+                <a href="https://www.instagram.com/tarq.mex/" target="_blank" class="social-link" aria-label="Instagram">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    </svg>
+                </a>
+                <a href="https://wa.me/522291139209" target="_blank" class="social-link" aria-label="WhatsApp">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 TARQ MX - Taller de Arquitectura Mexicana. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        // Slideshow functionality
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.hero-slide');
+        const dots = document.querySelectorAll('.slide-dot');
+        const totalSlides = slides.length;
+        let slideInterval;
+
+        function showSlide(index) {
+            // Remove active class from all slides and dots
+            slides.forEach(slide => slide.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+            
+            // Add active class to current slide and dot
+            slides[index].classList.add('active');
+            dots[index].classList.add('active');
+            currentSlide = index;
+        }
+
+        function nextSlide() {
+            let next = (currentSlide + 1) % totalSlides;
+            showSlide(next);
+        }
+
+        function startSlideshow() {
+            slideInterval = setInterval(nextSlide, 5000); // Change slide every 5 seconds
+        }
+
+        function stopSlideshow() {
+            clearInterval(slideInterval);
+        }
+
+        // Manual control with dots
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                stopSlideshow();
+                showSlide(index);
+                startSlideshow();
+            });
+        });
+
+        // Start slideshow on page load
+        startSlideshow();
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.2,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all service cards and portfolio items
+        document.querySelectorAll('.service-card, .portfolio-item, .stat-box').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+
+        // Add staggered animation delays
+        document.querySelectorAll('.service-card').forEach((card, index) => {
+            card.style.transitionDelay = `${index * 0.1}s`;
+        });
+
+        document.querySelectorAll('.stat-box').forEach((box, index) => {
+            box.style.transitionDelay = `${index * 0.15}s`;
+        });
+    </script>
+</body>
+</html>
